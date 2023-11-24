@@ -11,8 +11,12 @@
   "devDependencies": {
     "eslint": "^8.4.1",
     "prettier": "^2.5.1",
-    "tsconfig": "workspace:*",
+    "tsconfig": "*",
     "turbo": "latest"
   },
-  "packageManager": "pnpm@8.9.0"
+  "packageManager": "yarn@1.22.19",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }
