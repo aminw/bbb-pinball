@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { TextField, Button, Container, List, ListItem, Grid } from '@mui/material';
+import { TextField, Button, Container, List, ListItem, Grid, Card, CardContent, Typography } from '@mui/material';
 
 import "./App.css";
 import axios from 'axios';
+import usePinballData from './hooks/usePinballData';
+import { PinballData } from './models/pinball';
 
 function App(): JSX.Element {
   const [lon, setLon] = useState('');
   const [lat, setLat] = useState('');
-  const [pinballLocations, setPinballLocations] = useState(['']);
+  const [pinballLocations, setPinballLocations] = useState<PinballData[]>([]);
   const [err, setError] = useState('');
+
+  const { pinballMachines, loading, error } = usePinballData(lat, lon);
 
   const handleNearMeClick = () => {
     // Implement logic for Near Me button click
@@ -37,24 +41,39 @@ function App(): JSX.Element {
     // to fetch pinball locations and update the pinballLocations state
 
     try {
-      const apiUrl = 'https://pinballmap.com/api/v1/location_machine_xrefs/most_recent_by_lat_lon';
-      const response = await axios.get(`${apiUrl}?lat=${lat}&lon=${lon}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      //const apiUrl = 'https://pinballmap.com/api/v1/location_machine_xrefs/most_recent_by_lat_lon';
+      // const apiUrl = 'https://pinballmap.com/api/v1/locations/closest_by_lat_lon';
+      // const response = await axios.get(`${apiUrl}?lat=${lat}&lon=${lon}`, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
 
-      let dataRes: string[] = [];
+      // let dataRes: string[] = [];
       
-      if(response.data.most_recently_added_machines){
-        setPinballLocations([...response.data.most_recently_added_machines]);
-      }
-      else{
-        dataRes = response.data.errors;
-        setPinballLocations([response.data.errors + '  Please choose other coordinates.']);
-      }
+      // if(response.data.most_recently_added_machines){
+      //   setPinballLocations([...response.data.most_recently_added_machines]);
+      // }
+      // else{
+      //   dataRes = response.data.errors;
+      //   setPinballLocations([response.data.errors + '  Please choose other coordinates.']);
+      // }
       
-      console.log('wt2: ', dataRes);
+      // console.log('wt2: ', dataRes);
+      setLat(lat);
+      setLon(lon);
+      if (loading) {
+        // Handle loading state
+        console.log('wt loading');
+      // } else if (error) {
+      //   console.log('data: ', pinballMachines);
+      //   console.log('Error retrieving pinball data: ', error);
+      } else {
+        // Use closestRegion and pinballMachines data as needed 
+        console.log('data: ', pinballMachines);       
+        setPinballLocations([...pinballMachines]);
+      }
+
     } catch (error) {
       console.error('wt11 Error:', error);
     }
@@ -100,11 +119,34 @@ function App(): JSX.Element {
                 </Button>
               </Grid>
             </Grid>
-            <List>
-              {pinballLocations.map((location, index) => (
-                <ListItem key={index}>{location}</ListItem>
-              ))}
-            </List>
+            <div>
+              {pinballLocations.length > 0 && (
+                <>                
+                  <Typography variant="h5" gutterBottom>
+                    Pinball Machines:
+                  </Typography>
+                  <Card>
+                    <CardContent>
+                      {pinballLocations.map((machine: PinballData, index: number) => (
+                        <div key={index}>
+                          <Typography>Name: {machine?.location?.name}</Typography>
+                          <Typography>Street: {machine?.location?.street}</Typography>
+                          <Typography>City: {machine?.location?.city}</Typography>
+                          <Typography>State: {machine?.location?.state}</Typography>
+                          <Typography>Zip: {machine?.location?.zip}</Typography>
+                          <Typography variant="body1">
+                            <a href={`https://www.google.com/maps?q=${machine?.location?.lat},${machine?.location?.lon}`} target="_blank" rel="noopener noreferrer">
+                              Open in Google Maps
+                            </a>
+                          </Typography>
+                          <hr />
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                </>
+              )}
+            </div>
           </Container>
         </div>
       </header>
