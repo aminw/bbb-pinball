@@ -13,3 +13,8 @@ export interface PinballData {
         lon?: string;
     }
 }
+
+export interface Error {
+    message?: string;
+    details?: string;
+}

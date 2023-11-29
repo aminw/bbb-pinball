@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { RegionData, PinballData } from '../models/pinball';
+import type { RegionData, PinballData, Error } from '../models/pinball';
 
 const usePinballData = (
   lat: string,
   lon: string
 ): {
-  closestRegion: RegionData | null;
-  pinballMachines: PinballData[];
+  closestRegion: RegionData | undefined;
+  pinballMachines: PinballData[] | undefined;
   loading: boolean;
-  error: any; // replace 'any' with the actual error type if you have it
+  error: Error | null; 
 } => {
-  const [closestRegion, setClosestRegion] = useState<RegionData | null>(null);
-  const [pinballMachines, setPinballMachines] = useState<PinballData[]>([]);
+  const [closestRegion, setClosestRegion] = useState<RegionData | undefined>(undefined);
+  const [pinballMachines, setPinballMachines] = useState<PinballData[] | undefined>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,32 +26,41 @@ const usePinballData = (
         );
         console.log('wt3.0: ', closestRegionResponse);
         console.log('wt3: ', closestRegion);
-        const closestRegionData: RegionData = closestRegionResponse.data.region;
-        console.log('wt got here 2: ', closestRegionData);
-
-        setClosestRegion(closestRegionData);
-
-        if(closestRegionData?.name){
-            console.log('wt got here 3');
-            // Fetch pinball machines for the closest region
-            const pinballMachinesResponse = await axios.get(
-            `https://pinballmap.com/api/v1/region/${closestRegionData?.name}/location_machine_xrefs`
-            );
-            console.log('wt4: ', pinballMachinesResponse);
-            console.log('wt got here 4');
-
-            const pinballMachinesData: PinballData[] = pinballMachinesResponse.data.location_machine_xrefs;
-
-            setPinballMachines(pinballMachinesData);
-        }
-        else
+        if((closestRegionResponse?.data as { errors?: string })?.errors){
             setError({
-                message: 'No region found.',
-                details: 'Closest region data: ' + closestRegionData,
-              })
-        setLoading(false);
+                message: (closestRegionResponse?.data as { errors?: string })?.errors,
+                details: '',
+              });
+        }
+        else{
+            const closestRegionData: RegionData | undefined = (closestRegionResponse?.data as { region?: RegionData })?.region;
+            console.log('wt got here 2: ', closestRegionData);
+
+            setClosestRegion(closestRegionData);
+
+            if(closestRegionData?.name){
+                console.log('wt got here 3');
+                // Fetch pinball machines for the closest region
+                const pinballMachinesResponse = await axios.get(
+                `https://pinballmap.com/api/v1/region/${closestRegionData?.name}/location_machine_xrefs`
+                );
+                console.log('wt4: ', pinballMachinesResponse);
+                console.log('wt got here 4');
+
+                const pinballMachinesData: PinballData[] | undefined = (pinballMachinesResponse?.data as { location_machine_xrefs?: PinballData[] })?.location_machine_xrefs
+
+                setPinballMachines(pinballMachinesData);
+                setError(null);
+            }
+            else
+                setError({
+                    message: 'No region found.',
+                    details: 'Closest region data: ' + closestRegionData??'',
+                })
+            setLoading(false);
+        }
       } catch (error) {
-        setError(error);
+        setError({message: JSON.stringify(error)});
         setLoading(false);
       }
     };
