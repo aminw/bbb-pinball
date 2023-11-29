@@ -14,11 +14,7 @@ function App(): JSX.Element {
   const { pinballMachines, loading, error } = usePinballData(lat, lon);
 
   const handleNearMeClick = (): void => {
-    // Implement logic for Near Me button click
-    // You can use the latitude and longitude state values
-    // Check if the Geolocation API is available in the browser
     if (navigator.geolocation) {
-      // Use navigator.geolocation.getCurrentPosition to get the user's current position
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -30,53 +26,23 @@ function App(): JSX.Element {
         }
       );
     } else {
-      setErr('Geolocation is not supported by your browser');
+      setErr('Geolocation is not supported by your browser.');
     }
   };
 
   const handleSearchClick = (): void => {
-    // Implement logic for Search button click
-    // You can use the latitude and longitude state values
-    // to fetch pinball locations and update the pinballLocations state
-
     try {
-      //const apiUrl = 'https://pinballmap.com/api/v1/location_machine_xrefs/most_recent_by_lat_lon';
-      // const apiUrl = 'https://pinballmap.com/api/v1/locations/closest_by_lat_lon';
-      // const response = await axios.get(`${apiUrl}?lat=${lat}&lon=${lon}`, {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // });
-
-      // let dataRes: string[] = [];
-      
-      // if(response.data.most_recently_added_machines){
-      //   setPinballLocations([...response.data.most_recently_added_machines]);
-      // }
-      // else{
-      //   dataRes = response.data.errors;
-      //   setPinballLocations([response.data.errors + '  Please choose other coordinates.']);
-      // }
-      
-      // console.log('wt2: ', dataRes);
       setLat(lat);
       setLon(lon);
       setFirstClick(true);
       if (loading) {
-        // Handle loading state
-        console.log('wt loading');
-      // } else if (error) {
-      //   console.log('data: ', pinballMachines);
-      //   console.log('Error retrieving pinball data: ', error);
+        console.log('loading');
       } else {
-        // Use closestRegion and pinballMachines data as needed 
-        console.log('data: ', pinballMachines);       
-        console.log('error-: ', error);
         setPinballLocations(pinballMachines);
       }
 
     } catch (ce) {
-      console.error('wt11 Error:', ce);
+      console.error('Error:', ce);
     }
   }
 
@@ -87,9 +53,6 @@ function App(): JSX.Element {
           Better Business Bureau
           <div className="Turborepo">Pinball Locations Finder</div>
         </h1>
-        {/* <div>
-          {`${error} ${err}`}          
-        </div> */}
         <div>
           <Container>
             <Grid container spacing={2} alignItems="center">

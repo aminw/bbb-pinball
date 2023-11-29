@@ -19,13 +19,11 @@ const usePinballData = (
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('wt got here 1');
         // Fetch closest region based on lat and lon
         const closestRegionResponse = await axios.get(
           `https://pinballmap.com/api/v1/regions/closest_by_lat_lon.json?lat=${lat}&lon=${lon}`
         );
-        console.log('wt3.0: ', closestRegionResponse);
-        console.log('wt3: ', closestRegion);
+
         if((closestRegionResponse?.data as { errors?: string })?.errors){
             setError({
                 message: (closestRegionResponse?.data as { errors?: string })?.errors,
@@ -34,13 +32,10 @@ const usePinballData = (
         }
         else{
             const closestRegionData: RegionData | undefined = (closestRegionResponse?.data as { region?: RegionData })?.region;
-            console.log('wt got here 2: ', closestRegionData);
 
             setClosestRegion(closestRegionData);
 
             if(closestRegionData?.name){
-                console.log('wt got here 3');
-                // Fetch pinball machines for the closest region
                 const pinballMachinesResponse = await axios.get(
                 `https://pinballmap.com/api/v1/region/${closestRegionData?.name}/location_machine_xrefs`
                 );
@@ -55,17 +50,17 @@ const usePinballData = (
             else
                 setError({
                     message: 'No region found.',
-                    details: 'Closest region data: ' + closestRegionData??'',
+                    details: '',
                 })
             setLoading(false);
         }
-      } catch (error) {
-        setError({message: JSON.stringify(error)});
+      } catch (ueErr) {
+        setError({message: JSON.stringify(ueErr)});
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchData().then(() => console.log('success!')).catch((fderr) => console.log('Fetch Data error: ', fderr));
   }, [lat, lon]);
 
   return { closestRegion, pinballMachines, loading, error };
