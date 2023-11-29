@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "140ba712-2ef1-44d8-8c38-362dbb4f35f2",
+		"name": "Pinball",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "closest_by_address",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\": \"45 Carole Jean \\nClifton Park, NY 12065\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://pinballmap.com/api/v1/locations/closest_by_address",
+					"protocol": "https",
+					"host": [
+						"pinballmap",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"locations",
+						"closest_by_address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "most_recent_by_lat_lon",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"lat\": \"42.8507136\",\r\n    \"lon\": \"-73.8066432\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://pinballmap.com/api/v1/location_machine_xrefs/most_recent_by_lat_lon",
+					"protocol": "https",
+					"host": [
+						"pinballmap",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"location_machine_xrefs",
+						"most_recent_by_lat_lon"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "closest_by_lat_lon",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"lat\": \"42.8507136\",\r\n    \"lon\": \"-73.8066432\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://pinballmap.com/api/v1/locations/closest_by_lat_lon",
+					"protocol": "https",
+					"host": [
+						"pinballmap",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"locations",
+						"closest_by_lat_lon"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "regions/closest_by_lat_lon.json",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"lat\": \"42.8507136\",\r\n    \"lon\": \"-73.8066432\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://pinballmap.com/api/v1/locations/closest_by_lat_lon",
+					"protocol": "https",
+					"host": [
+						"pinballmap",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"locations",
+						"closest_by_lat_lon"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "region/:region/location_machine_xrefs",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"lat\": \"42.8507136\",\r\n    \"lon\": \"-73.8066432\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://pinballmap.com/api/v1/locations/closest_by_lat_lon",
+					"protocol": "https",
+					"host": [
+						"pinballmap",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"locations",
+						"closest_by_lat_lon"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
